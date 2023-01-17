@@ -1,3 +1,5 @@
+import { red } from "@mui/material/colors";
+
 export const carsSource = [
   {
     brand: "Mercedes-Benz",
@@ -13,6 +15,13 @@ export const carsSource = [
     brand: "Audi",
     model: "A8",
     year: 2019,
+    color: "red",
+  },
+  {
+    brand: "Audi",
+    model: "A8",
+    year: 2019,
+    color: "silver",
   },
   {
     brand: "BMW",
