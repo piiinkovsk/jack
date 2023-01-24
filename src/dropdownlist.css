@@ -1,7 +1,14 @@
 .drop-down-list-caption {
-  background-color: #ffffff;
+  background-color: hsl(0, 0%, 100%);
 }
 
 .drop-down-list-element {
   width: 200px;
+  border: 1px solid hsl(0, 0%, 55%);
+  color: hsl(271, 76%, 53%);
+}
+
+.disabled {
+  border: 1px solid blue;
+  color: hsl(0, 80%, 35%);
 }

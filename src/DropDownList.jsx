@@ -1,9 +1,8 @@
 import React from "react";
-import "./dropdownlist.css";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { useEffect } from "react";
-import { FormControl, InputLabel, TextField } from "@mui/material";
+import { FormControl, InputLabel } from "@mui/material";
+import "./dropdownlist.css";
 
 export default function DropDownList({
   _caption,
@@ -11,8 +10,8 @@ export default function DropDownList({
   _id,
   _activeElement,
   _data,
-  _event, // here you pass a setState from the parent to update the state (activeModel or activeBrand)
-  _condition,
+  _event,
+  _isDisabled,
 }) {
   return (
     <FormControl>
@@ -22,8 +21,8 @@ export default function DropDownList({
         id={_id}
         value={_activeElement}
         onChange={_event}
-        className="drop-down-list-element"
-        disabled={_condition}
+        className={`drop-down-list-element ${_isDisabled ? "disabled" : ""}`}
+        disabled={_isDisabled}
       >
         {_data.map((element) => {
           return (

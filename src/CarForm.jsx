@@ -1,12 +1,7 @@
-import React from "react";
-import { useState } from "react";
-import "./carform.css";
+import React, { useState, useEffect } from "react";
 import DropDownList from "./DropDownList.jsx";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { useEffect } from "react";
 import { Box } from "@mui/material";
-import { shadows } from "@mui/system";
+import "./carform.css";
 
 export default function CarForm({ content }) {
   const [brands, setBrands] = useState(
@@ -16,25 +11,29 @@ export default function CarForm({ content }) {
       })
     )
   );
-  const [activeBrand, setActiveBrand] = useState(""); //brand.jsx
-  const [activeModel, setActiveModel] = useState(""); //model.jsx
+  const [isColorDisabled, setIsColorDisabled] = useState(true);
+  const [activeBrand, setActiveBrand] = useState("");
+  const [activeModel, setActiveModel] = useState("");
   const [activeColor, setActiveColor] = useState("");
-  const [models, setModels] = useState([]); // make this a set
-  const [colors, setColors] = useState([]); // make this a set
+  const [models, setModels] = useState([]);
+  const [colors, setColors] = useState([]);
 
   useEffect(() => {
+    setModels([]);
+    setColors([]);
+    setActiveModel("");
+    setActiveColor("");
     const filteredBrand = content.filter((_element) => {
       return _element.brand === activeBrand;
     });
-
     const filteredModels = filteredBrand.map((_element) => {
       return _element.model;
     });
     setModels([...new Set(filteredModels)]);
-    setColors([]);
   }, [activeBrand]);
 
   useEffect(() => {
+    setActiveColor("");
     const filteredColors = content
       .filter((_element) => _element.brand === activeBrand)
       .filter((_element) => _element.model === activeModel)
@@ -43,6 +42,10 @@ export default function CarForm({ content }) {
       });
     setColors([...new Set(filteredColors)]);
   }, [activeModel]);
+
+  useEffect(() => {
+    colors.length === 0 ? setIsColorDisabled(true) : setIsColorDisabled(false);
+  }, [colors]);
 
   return (
     <Box
@@ -60,7 +63,7 @@ export default function CarForm({ content }) {
         _activeElement={activeBrand}
         _event={(event) => setActiveBrand(event.target.value)}
         _data={[...brands]}
-        _condition={false}
+        _isDisabled={false}
       />
       <DropDownList
         _caption="Model"
@@ -69,7 +72,7 @@ export default function CarForm({ content }) {
         _activeElement={activeModel}
         _event={(event) => setActiveModel(event.target.value)}
         _data={models}
-        _condition={activeBrand === "" ? true : false}
+        _isDisabled={activeBrand === "" ? true : false}
       />
       <DropDownList
         _caption="Color"
@@ -78,7 +81,7 @@ export default function CarForm({ content }) {
         _activeElement={activeColor}
         _event={(event) => setActiveColor(event.target.value)}
         _data={colors}
-        _condition={activeModel === "" ? true : false}
+        _isDisabled={isColorDisabled}
       />
     </Box>
   );
