@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import "./carform.css";
-import DropDownList from "./DropDownList";
+import DropDownList from "./DropDownList.jsx";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useEffect } from "react";
+import { Box } from "@mui/material";
+import { shadows } from "@mui/system";
 
 export default function CarForm({ content }) {
   const [brands, setBrands] = useState(
@@ -14,50 +16,70 @@ export default function CarForm({ content }) {
       })
     )
   );
-
-  const [activeBrand, setActiveBrand] = useState();
-  const [activeModel, setActiveModel] = useState();
-  const [models, setModels] = useState([]);
+  const [activeBrand, setActiveBrand] = useState(""); //brand.jsx
+  const [activeModel, setActiveModel] = useState(""); //model.jsx
+  const [activeColor, setActiveColor] = useState("");
+  const [models, setModels] = useState([]); // make this a set
+  const [colors, setColors] = useState([]); // make this a set
 
   useEffect(() => {
-    const filteredBrand = content.filter((item) => {
-      return item.brand === activeBrand;
+    const filteredBrand = content.filter((_element) => {
+      return _element.brand === activeBrand;
     });
 
-    const filteredModels = filteredBrand.map((e) => {
-      return e.model;
+    const filteredModels = filteredBrand.map((_element) => {
+      return _element.model;
     });
-
     setModels([...new Set(filteredModels)]);
+    setColors([]);
   }, [activeBrand]);
 
+  useEffect(() => {
+    const filteredColors = content
+      .filter((_element) => _element.brand === activeBrand)
+      .filter((_element) => _element.model === activeModel)
+      .map((_element) => {
+        return _element.color;
+      });
+    setColors([...new Set(filteredColors)]);
+  }, [activeModel]);
+
   return (
-    <div className="car-form">
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={activeBrand}
-        label={activeBrand}
-        onChange={(event) => setActiveBrand(event.target.value)}
-      >
-        {[...brands].map((element) => {
-          return <MenuItem value={element}>{element}</MenuItem>;
-        })}
-      </Select>
-
-      <Select
-        labelId="demo-simple-select-label1"
-        id="demo-simple-select1"
-        value={activeModel}
-        label={activeModel}
-        onChange={(event) => setActiveModel(event.target.value)}
-      >
-        {models.map((element) => {
-          return <MenuItem value={element}>{element}</MenuItem>;
-        })}
-      </Select>
-
-      {/* <DropDownList type={element.year} label="Year"></DropDownList> */}
-    </div>
+    <Box
+      className="car-form"
+      sx={{
+        boxShadow: "0px 4px 5px -4px hsl(220, 100%, 22%, 0.5)",
+        width: "200px",
+        backgroundColor: "hsl(220, 100%, 100%)",
+      }}
+    >
+      <DropDownList
+        _caption="Brand"
+        _labelId="demo-simple-select-label"
+        _id="demo-simple-select"
+        _activeElement={activeBrand}
+        _event={(event) => setActiveBrand(event.target.value)}
+        _data={[...brands]}
+        _condition={false}
+      />
+      <DropDownList
+        _caption="Model"
+        _labelId="demo-simple-select-label"
+        _id="demo-simple-select"
+        _activeElement={activeModel}
+        _event={(event) => setActiveModel(event.target.value)}
+        _data={models}
+        _condition={activeBrand === "" ? true : false}
+      />
+      <DropDownList
+        _caption="Color"
+        _labelId="demo-simple-select-label"
+        _id="demo-simple-select"
+        _activeElement={activeColor}
+        _event={(event) => setActiveColor(event.target.value)}
+        _data={colors}
+        _condition={activeModel === "" ? true : false}
+      />
+    </Box>
   );
 }

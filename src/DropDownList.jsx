@@ -1,25 +1,37 @@
 import React from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import "./dropdownlist.css";
 import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { useEffect } from "react";
+import { FormControl, InputLabel, TextField } from "@mui/material";
 
-export default function DropDownList({ type, label }) {
-  const [age, setAge] = React.useState("");
-  console.log(type);
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+export default function DropDownList({
+  _caption,
+  _labelId,
+  _id,
+  _activeElement,
+  _data,
+  _event, // here you pass a setState from the parent to update the state (activeModel or activeBrand)
+  _condition,
+}) {
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel id="demo-simple-select-standard-label">{label}</InputLabel>
+    <FormControl>
+      <InputLabel className="drop-down-list-caption">{_caption}</InputLabel>
       <Select
-        labelId="demo-simple-select-standard-label"
-        id="demo-simple-select-standard"
-        onChange={handleChange}
-        label={label}
+        labelId={_labelId}
+        id={_id}
+        value={_activeElement}
+        onChange={_event}
+        className="drop-down-list-element"
+        disabled={_condition}
       >
-        <MenuItem>{type}</MenuItem>
+        {_data.map((element) => {
+          return (
+            <MenuItem key={element} value={element}>
+              {element}
+            </MenuItem>
+          );
+        })}
       </Select>
     </FormControl>
   );
