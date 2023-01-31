@@ -22,7 +22,7 @@ export default function DropDownList({
         className={`drop-down-list-element ${_isDisabled ? "disabled" : ""}`}
         IconComponent={KeyboardArrowDownIcon}
       >
-        {_data.map((element) => {
+        {[..._data].map((element) => {
           return (
             <MenuItem key={element} value={element}>
               {element}

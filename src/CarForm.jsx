@@ -5,19 +5,18 @@ import { defaultTheme } from "./theme.js";
 import "./carform.css";
 
 export default function CarForm({ content }) {
-  const [brands, setBrands] = useState(
-    new Set(
-      content.map((element) => {
-        return element.brand;
-      })
-    )
+  const brands = new Set(
+    content.map((element) => {
+      return element.brand;
+    })
   );
+
   const [isColorDisabled, setIsColorDisabled] = useState(true);
   const [activeBrand, setActiveBrand] = useState("");
   const [activeModel, setActiveModel] = useState("");
   const [activeColor, setActiveColor] = useState("");
-  const [models, setModels] = useState(new Set()); //array to Set
-  const [colors, setColors] = useState(new Set()); //array to Set
+  const [models, setModels] = useState(new Set());
+  const [colors, setColors] = useState(new Set());
 
   useEffect(() => {
     setActiveModel("");
@@ -53,21 +52,21 @@ export default function CarForm({ content }) {
           _caption="Brand"
           _activeElement={activeBrand}
           _event={(event) => setActiveBrand(event.target.value)}
-          _data={[...brands]}
+          _data={brands}
           _isDisabled={false}
         />
         <DropDownList
           _caption="Model"
           _activeElement={activeModel}
           _event={(event) => setActiveModel(event.target.value)}
-          _data={[...models]}
+          _data={models}
           _isDisabled={activeBrand === "" ? true : false}
         />
         <DropDownList
           _caption="Color"
           _activeElement={activeColor}
           _event={(event) => setActiveColor(event.target.value)}
-          _data={[...colors]}
+          _data={colors}
           _isDisabled={isColorDisabled}
         />
       </Box>
