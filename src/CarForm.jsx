@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Box, ThemeProvider } from "@mui/material";
 import DropDownList from "./DropDownList.jsx";
-import { Box } from "@mui/material";
+import { defaultTheme } from "./theme.js";
 import "./carform.css";
 
 export default function CarForm({ content }) {
@@ -15,11 +16,10 @@ export default function CarForm({ content }) {
   const [activeBrand, setActiveBrand] = useState("");
   const [activeModel, setActiveModel] = useState("");
   const [activeColor, setActiveColor] = useState("");
-  const [models, setModels] = useState([]);
-  const [colors, setColors] = useState([]);
+  const [models, setModels] = useState(new Set()); //array to Set
+  const [colors, setColors] = useState([]); //array to Set
 
   useEffect(() => {
-    setModels([]);
     setColors([]);
     setActiveModel("");
     setActiveColor("");
@@ -29,7 +29,7 @@ export default function CarForm({ content }) {
     const filteredModels = filteredBrand.map((_element) => {
       return _element.model;
     });
-    setModels([...new Set(filteredModels)]);
+    setModels(new Set(filteredModels));
   }, [activeBrand]);
 
   useEffect(() => {
@@ -48,41 +48,30 @@ export default function CarForm({ content }) {
   }, [colors]);
 
   return (
-    <Box
-      className="car-form"
-      sx={{
-        boxShadow: "0px 4px 5px -4px hsl(220, 100%, 22%, 0.5)",
-        width: "200px",
-        backgroundColor: "hsl(220, 100%, 100%)",
-      }}
-    >
-      <DropDownList
-        _caption="Brand"
-        _labelId="demo-simple-select-label"
-        _id="demo-simple-select"
-        _activeElement={activeBrand}
-        _event={(event) => setActiveBrand(event.target.value)}
-        _data={[...brands]}
-        _isDisabled={false}
-      />
-      <DropDownList
-        _caption="Model"
-        _labelId="demo-simple-select-label"
-        _id="demo-simple-select"
-        _activeElement={activeModel}
-        _event={(event) => setActiveModel(event.target.value)}
-        _data={models}
-        _isDisabled={activeBrand === "" ? true : false}
-      />
-      <DropDownList
-        _caption="Color"
-        _labelId="demo-simple-select-label"
-        _id="demo-simple-select"
-        _activeElement={activeColor}
-        _event={(event) => setActiveColor(event.target.value)}
-        _data={colors}
-        _isDisabled={isColorDisabled}
-      />
-    </Box>
+    <ThemeProvider theme={defaultTheme}>
+      <Box className="car-form">
+        <DropDownList
+          _caption="Brand"
+          _activeElement={activeBrand}
+          _event={(event) => setActiveBrand(event.target.value)}
+          _data={[...brands]}
+          _isDisabled={false}
+        />
+        <DropDownList
+          _caption="Model"
+          _activeElement={activeModel}
+          _event={(event) => setActiveModel(event.target.value)}
+          _data={[...models]}
+          _isDisabled={activeBrand === "" ? true : false}
+        />
+        <DropDownList
+          _caption="Color"
+          _activeElement={activeColor}
+          _event={(event) => setActiveColor(event.target.value)}
+          _data={colors}
+          _isDisabled={isColorDisabled}
+        />
+      </Box>
+    </ThemeProvider>
   );
 }
