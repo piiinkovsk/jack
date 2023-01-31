@@ -17,10 +17,9 @@ export default function CarForm({ content }) {
   const [activeModel, setActiveModel] = useState("");
   const [activeColor, setActiveColor] = useState("");
   const [models, setModels] = useState(new Set()); //array to Set
-  const [colors, setColors] = useState([]); //array to Set
+  const [colors, setColors] = useState(new Set()); //array to Set
 
   useEffect(() => {
-    setColors([]);
     setActiveModel("");
     setActiveColor("");
     const filteredBrand = content.filter((_element) => {
@@ -40,11 +39,11 @@ export default function CarForm({ content }) {
       .map((_element) => {
         return _element.color;
       });
-    setColors([...new Set(filteredColors)]);
+    setColors(new Set(filteredColors));
   }, [activeModel]);
 
   useEffect(() => {
-    colors.length === 0 ? setIsColorDisabled(true) : setIsColorDisabled(false);
+    colors.size === 0 ? setIsColorDisabled(true) : setIsColorDisabled(false);
   }, [colors]);
 
   return (
@@ -68,7 +67,7 @@ export default function CarForm({ content }) {
           _caption="Color"
           _activeElement={activeColor}
           _event={(event) => setActiveColor(event.target.value)}
-          _data={colors}
+          _data={[...colors]}
           _isDisabled={isColorDisabled}
         />
       </Box>

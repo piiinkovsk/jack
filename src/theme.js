@@ -27,11 +27,11 @@ export const defaultTheme = createTheme({
           color: "hsla(45, 100%, 50%, 1)",
         },
         select: {},
-        outlined: {
-          "&:hover": {
-            border: "3px solid red",
-          },
-        },
+        // outlined: {
+        //   "&:hover": {
+        //     border: "3px solid red",
+        //   },
+        // },
       },
     },
     // MuiInputBase: {
