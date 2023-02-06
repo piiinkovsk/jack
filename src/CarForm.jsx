@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  ThemeProvider,
+  Typography,
+  Button,
+  Snackbar,
+} from "@mui/material";
 import DropDownList from "./DropDownList.jsx";
 import { defaultTheme } from "./theme.js";
 import "./carform.css";
@@ -12,11 +18,23 @@ export default function CarForm({ content }) {
   );
 
   const [isColorDisabled, setIsColorDisabled] = useState(true);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [activeBrand, setActiveBrand] = useState("");
   const [activeModel, setActiveModel] = useState("");
   const [activeColor, setActiveColor] = useState("");
   const [models, setModels] = useState(new Set());
   const [colors, setColors] = useState(new Set());
+
+  const handleClickSnackbar = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   useEffect(() => {
     setActiveModel("");
@@ -48,6 +66,7 @@ export default function CarForm({ content }) {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box className="car-form">
+        <Typography variant="h6"> Choose your car</Typography>
         <DropDownList
           _caption="Brand"
           _activeElement={activeBrand}
@@ -69,6 +88,15 @@ export default function CarForm({ content }) {
           _data={colors}
           _isDisabled={isColorDisabled}
         />
+        <Button variant="contained" onClick={handleClickSnackbar}>
+          Result
+        </Button>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={1500}
+          onClose={handleCloseSnackbar}
+          message="Great work"
+        ></Snackbar>
       </Box>
     </ThemeProvider>
   );
